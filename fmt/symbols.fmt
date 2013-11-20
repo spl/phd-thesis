@@ -1,0 +1,16 @@
+%format forall  = "∀"
+%format exists  = "∃"
+
+%format Lambda  = "Λ"
+
+%format +-      = "\vdash "
+
+%format ::      = "∷"
+%format ::=     = "⩴"
+
+%format |       = "\mathrel{\;|\;}"
+
+%format ++      = "⧺"
+
+%format .       = "."
+%format `o`     = "∘"

@@ -1,0 +1,187 @@
+%-------------------------------------------------------------------------------
+%   PACKAGE INFORMATION
+%-------------------------------------------------------------------------------
+
+% File name: spl-thesis.sty
+% Author: Sean Leather <firstname.lastname@gmail.com>
+
+% (1) Since we are loading 'unicode-math', this package must be loaded /after/
+%     'amssymb' and 'amsmath'.
+
+
+%-------------------------------------------------------------------------------
+%   GENERAL
+%-------------------------------------------------------------------------------
+
+\ProvidesPackage{spl-thesis}[2013/11/06 v0.1 SPL thesis]
+
+% This class is for use with XeTeX.
+\RequirePackage{ifxetex}
+\RequireXeTeX
+
+
+%-------------------------------------------------------------------------------
+%   FONTS FOR TEXT
+%-------------------------------------------------------------------------------
+
+% Unicode fonts
+\RequirePackage{fontspec}
+
+% Main font
+\setmainfont[Ligatures=TeX]{Garamond Premier Pro}
+
+% Sans-serif font
+\setsansfont[Scale=MatchLowercase]{Optima}
+
+% Monospaced/Teletype font
+\setmonofont[Scale=MatchLowercase]{Adelle}
+
+
+%-------------------------------------------------------------------------------
+%   FONTS FOR MATH
+%-------------------------------------------------------------------------------
+
+% Extension of 'amsmath': \cramped, \vcentcolon, \lparen, \rparen, etc.
+\RequirePackage{mathtools}
+
+% Unicode fonts for text and math (cannot be followed by 'amsmath')
+\RequirePackage{unicode-math}
+
+%\setmathfont{Garamond Premier Pro}
+\setmathfont[Scale=MatchUppercase]{XITS Math}
+
+% XITS Math: \mathscr
+\setmathfont[range=\mathscr]{XITS Math}
+
+% Garamond Premier Pro: most math fonts
+\setmathfont[range=\mathup/{num,latin,Latin,greek,Greek},   Ligatures=TeX, Numbers={Lining}]{Garamond Premier Pro}
+\setmathfont[range=\mathit/{num,latin,Latin,greek,Greek},   Ligatures=TeX, Numbers={Lining}]{Garamond Premier Pro Italic}
+\setmathfont[range=\mathbf/{num,latin,Latin,greek,Greek},   Ligatures=TeX, Numbers={Lining}]{Garamond Premier Pro Bold Italic}
+\setmathfont[range=\mathbfup/{num,latin,Latin,greek,Greek}, Ligatures=TeX, Numbers={Lining}]{Garamond Premier Pro Bold}
+
+% Apple Chancery: \mathcal
+\setmathfont[range=\mathcal]{Apple Chancery}
+
+% EB Garamond: :, =, ::= (Coloneqq)
+\setmathfont[range={"003A,"003D,"2A74}]{EB Garamond 12 Regular}
+
+% Asana Math: forall, exists, ++
+\setmathfont[range={"2200,"2203,"29FA}]{Asana Math}
+\setmathfont[range={"2032}]{Asana Math}
+
+
+%-------------------------------------------------------------------------------
+%   SYMBOLS
+%-------------------------------------------------------------------------------
+
+% Extras for XeTeX (e.g. \textsuperscript/\textsubscript)
+\RequirePackage{xltxtra}
+
+% From latexsym
+\DeclareSymbolFont{lasy}{U}{lasy}{m}{n}
+\DeclareMathSymbol{\rightwavearrow}{\mathrel}{lasy}{"3B}
+
+% For \stackbin
+\usepackage{stackrel}
+
+
+%-------------------------------------------------------------------------------
+%   HYPERLINKS
+%-------------------------------------------------------------------------------
+
+\RequirePackage{hyperref}
+\RequirePackage{url}
+
+
+%-------------------------------------------------------------------------------
+%   TABLES
+%-------------------------------------------------------------------------------
+
+\RequirePackage{tabularx}
+
+
+%-------------------------------------------------------------------------------
+%   LISTS
+%-------------------------------------------------------------------------------
+
+\RequirePackage{enumitem}
+
+\setlist[enumerate]{leftmargin=2\parindent}
+\setlist[itemize]{leftmargin=2\parindent}
+
+
+%-------------------------------------------------------------------------------
+%   INFERENCE RULES
+%-------------------------------------------------------------------------------
+
+\usepackage{mathpartir}
+
+
+%-------------------------------------------------------------------------------
+%   THEOREMS
+%-------------------------------------------------------------------------------
+
+\usepackage[thmmarks,thref,amsmath,hyperref]{ntheorem}
+
+\theoremnumbering{arabic}
+
+% Definition
+\theoremstyle{plain}
+\theoremheaderfont{\normalfont\bfseries}
+\theorembodyfont{\slshape}
+\theoremseparator{.}
+\theoremsymbol{\ensuremath{\bullet}}
+\newtheorem{Definition}{Definition}
+
+% Theorem and Lemma
+\theoremstyle{plain}
+\theoremheaderfont{\normalfont\bfseries}
+\theorembodyfont{\slshape}
+\theoremsymbol{\ensuremath{\scriptscriptstyle\square}}
+\theoremseparator{.}
+\newtheorem{Theorem}{Theorem}
+\newtheorem{Lemma}{Lemma}
+
+% Proof
+\theoremstyle{nonumberplain}
+\theoremheaderfont{\sc}
+\theorembodyfont{\upshape}
+\theoremseparator{}
+\theoremsymbol{\ensuremath{\scriptscriptstyle\blacksquare}}
+\newtheorem{Proof}{Proof}
+
+% Case
+\makeatletter
+\newtheoremstyle{nonumbernobrackets}%
+  {\item[\theorem@@headerfont\hskip\labelsep ##1\theorem@@separator]}%
+  {\item[\theorem@@headerfont\hskip\labelsep ##1\ ##3\theorem@@separator]}
+\makeatother
+
+\theoremstyle{nonumbernobrackets}
+\theoremindent0cm
+\theoremseparator{}
+\newtheorem{Case}{Case}
+
+% Equation label
+\newcommand{\eqlabel}[1]{\ensuremath{{\scriptstyle \textsc{(#1)}}}}
+
+
+%-------------------------------------------------------------------------------
+%   BIBLIOGRAPHY
+%-------------------------------------------------------------------------------
+
+\RequirePackage{natbib}
+
+
+%-------------------------------------------------------------------------------
+%   ABBREVIATIONS
+%-------------------------------------------------------------------------------
+
+\newcommand{\ttt}{type-and-transform}
+\newcommand{\tts}{type-and-transform system}
+\newcommand{\ttss}{type-and-transform systems}
+\newcommand{\Ttss}{Type-and-transform systems}
+\newcommand{\TTS}{Type-and-Transform System}
+\newcommand{\TTSS}{Type-and-Transform Systems}
+\newcommand{\ww}{worker/\allowbreak{}wrapper}
+

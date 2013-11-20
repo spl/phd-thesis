@@ -1,0 +1,215 @@
+%-------------------------------------------------------------------------------
+%   INCLUDES
+%-------------------------------------------------------------------------------
+
+%include polycode.fmt
+%include spacing.fmt
+%include arrows.fmt
+%include symbols.fmt
+
+
+%-------------------------------------------------------------------------------
+%   gen.fmt
+%-------------------------------------------------------------------------------
+
+%include gen.fmt
+
+% Formats that override gen.fmt
+%format f' = "\Varid{f\,\prime}"
+%format f'' = "\Varid{f\,\dprime}"
+%format f''' = "\Varid{f\,\trprime}"
+
+
+%-------------------------------------------------------------------------------
+%   SPACING
+%-------------------------------------------------------------------------------
+
+%format negSpace    = "\!"
+%format smSpace     = "\,"
+%format mdSpace     = "\:"
+%format lgSpace     = "\;"
+%format quad        = "\quad"
+%format qquad       = "\qquad"
+
+% Rule spacing
+%format labelPadding  = negSpace
+%format rulePadding   = quad
+%format ruleRhs       = lgSpace
+
+%format ^ = "\,"
+
+
+%-------------------------------------------------------------------------------
+%   GENERAL-PURPOSE MACROS
+%-------------------------------------------------------------------------------
+
+%format (sup(f)(x)) = "{" f "}" ^ "^{" x "}"
+%format (sub(f)(x)) = "{" f "}_{" x "}"
+%format (papp(f)(x)) = "{" f "}\,(" x ")"
+
+
+%-------------------------------------------------------------------------------
+%   GENERAL-PURPOSE MACROS
+%-------------------------------------------------------------------------------
+
+% Symbols
+
+% Keywords
+%format fix = "\mathbf{fix}"
+
+% mathscr
+%format G = "\mathscr{G}"
+%format (Gen(e)(t)) = "{" G "}_{" e "}(" t ")"
+%format Unify = "\mathscr{U}"
+%format ruleset = "\mathscr{R}"
+
+%format ttf = "\mathscr{T}"
+%format ttf'
+%format ttf_Envf = ttf "_{" Envf "}"
+%format noI = "\bar{\iota}"
+
+%format W = "\mathscr{W}"
+%format PW = "\mathscr{P}_{\mathscr{W}}"
+
+% Non-keywords
+%format in_ = "in"
+%format of_ = "of"
+%format where_ = "\;\textrm{where}\;"
+
+% Turnstiles
+%format `tssolve` = "\vdash_{\!\!\text{\tiny sol}}"
+%format `tsmatch` = "\mathrel{\vdash_{\!\!\text{\tiny ma}}}"
+%format `tsapply` = "\mathrel{\vdash_{\!\!\text{\tiny ap}}}"
+%format `tsrw` = "\mathrel{\vdash_{\!\!\text{\tiny rw}}}"
+%format `tsprop` = "\mathrel{\vdash_{\!\!\text{\tiny pr}}}"
+%format `tstrans` = "\mathrel{\vdash_{\!\!\text{\tiny tr}}}"
+
+% Brackets
+%format (brack(e)) = "\left( " e "\right) "
+%format (setbrack(e)) = "\left\lbrace " e "\right\rbrace "
+%format (sbbrack(e)) = "[ " e "] "
+%format (rwbrack(e)) = "\left\langle " e "\right\rangle "
+%format (tyfsub(t)(r)) = t "\langle " r "\rangle "
+%format (scfsub(t)(r)(e)) = t "\langle " r "\rangle_{" e "}"
+
+% Dots
+%format dots = "\cdots "
+%format rdots = ".."
+%format cdot = "\cdot "
+%format ... = "\mathbin{\ldots}"
+
+% Boolean: conjunction and disjunction
+% TODO: should replace with && ||
+%format ^^ = "\wedge "
+%format vv = "\vee "
+
+% Equality operators
+%format `neq` = "\nequiv "
+%format `beq` = "{\equiv}_{\beta\eta}"
+%format `def` = "\stackrel{\text{\tiny def}}{=}"
+
+% Triangles
+%format |> = "\mathrel{\triangleright}"
+%format <| = "\mathrel{\triangleleft}"
+%format (is(t)) = "\stackrel{\triangleleft}{\sim}_{" t "}"
+
+% Set operators
+%format `subseteq` = "\subseteq "
+%format `supseteq` = "\supseteq "
+%format `union` = "\cup "
+%format `intersect` = "\cap "
+%format complement = "\mathbin{\backslash}"
+%format `vert` = "\mathrel{\vert}"
+%format `del` = "\mathrel{\backslash} "
+%format empty = "\varepsilon "
+%format mempty = "\epsilonup "
+
+% Haskell operators
+%format $ = "\mathrel{\$}"
+%format <> = "\diamond "
+%format .+. = "\oplus "
+
+% Haskell operator prefix versions
+%format pppre = "\mathord{(+\!\!+)}"
+%format dotpre = "\mathord{(\circ)}"
+%format dollarpre = "\mathord{(\$)}"
+%format pluspre = "\mathord{(+)}"
+%format mulpre = "\mathord{(*)}"
+
+% Function formats
+% format (vec(x)) = "\vec{" x "}"
+%format (vec(x)) = "\bar{" x "}"
+%format (longvec(x)) = "\overline{" x "}"
+%format (text(x)) = "\textrm{" x "}"
+
+% Types
+%format tv_bty = "\sfrac{" tv "}{" bty "}"
+%format tyI = "\Varid{\iota}"
+%format tyA = "\Varid{\mathcal{A}}"
+%format tyR = "\Varid{\mathcal{R}}"
+
+% Examples
+%format Fix_ = "\Varid{Fix}"
+%format Exp_F
+%format Val_F
+%format Add_F
+
+% Diagram
+%format ty_tl = "{" ty "}_{\Varid{lt}}"
+%format ty_tr = "{" ty "}_{\Varid{rt}}"
+%format tyf_lr = "{" tyf "}_{\Varid{l|r}}"
+
+%format `inst` = "\prec "
+% format `solve` = "\twoheadrightarrow "
+%format `solve` = "\triangleright "
+%format `par` = "\parallel "
+%format (many(n)(e)) = "{[" e "]}^{" n "}"
+% format (many(n)(e)) = "{\left[" e "\right]}^{" n "}"
+
+% Constraint operators
+%format `ceq`  = "\mathrel{\equiv}"
+%format `expl` = "\mathrel{\preceq}"
+%format `impl` = "\mathrel{{\leq}_{\!" M "}}"
+
+% Match with subscript substitution
+%format matchSubstBeg = "\mathrel{\overlay{\raisebox{-3pt}{\ensuremath{\scriptstyle "
+%format matchSubstEnd = "}}}\succ}"
+%format (matchSubst(e)(s)(f)) = e matchSubstBeg s matchSubstEnd f
+
+% Apply and compose substitutions
+%format (applySubst(s)(e)) = s smSpace e
+%format compSubst = .
+
+% Interpretation function
+%format llbracket = "\left\llbracket{}"
+%format rrbracket = "\right\rrbracket{}"
+%format (interpretrwrule(r)(g)(e)(f)) = llbracket r rrbracket "_{" g "}" e " = " f
+%format (interpret(e)(x)(f)) = llbracket e rrbracket "_{" x "} = " f
+
+% Type functor interpretation
+%format (interpret_tyf(x)(t)) = llbracket x rrbracket "_{" t "}"
+
+% Library names
+%format complexrect = "\package{complex-rect}"
+%format complexpolar = "\package{complex-polar}"
+
+% Magnitude, arity, and subscript
+%format (magnitude(x)) = "|" x "|"
+%format (arity(g)(x)) = "|" x "|_{" g "}"
+%format (sub(x)(s)) = "{" x "}_{" s "}"
+
+% Dimap
+%format D = "\mathcal{D}"
+%format (d_(x)) = "\mathcal{d}" "_{" x "}"
+%format (map_(x)) = map "_{" x "}"
+%format (dimap_(x)) = dimap "_{" x "}"
+%format (dimap_tyf(x)) = D "_{" x "}"
+%format (dimap_scf(g)(x)) = D "_{" x "," g "}"
+%format (dimap_envf(g)) = D "_{" g "}"
+
+%format evalF = "\Varid{eval}_\Varid{F}"
+%format `addR` = "\mathbin{\Varid{+}_\Varid{R}}"
+%format `mulR` = "\mathbin{\Varid{\times}_\Varid{R}}"
+%format `addP` = "\mathbin{\Varid{+}_\Varid{P}}"
+%format `mulP` = "\mathbin{\Varid{\times}_\Varid{P}}"
+

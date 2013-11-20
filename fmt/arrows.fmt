@@ -1,0 +1,22 @@
+%format ->      = "\mathbin{\rightarrow}"
+%format =>      = "\mathbin{\Rightarrow}"
+
+%format <-      = "\mathbin{\leftarrow}"
+%format <=      = "\mathbin{\Leftarrow}"
+
+%format --->    = "\mathbin{\longrightarrow}"
+%format ===>    = "\mathbin{\Longrightarrow}"
+
+%format <---    = "\mathbin{\longleftarrow}"
+%format <===    = "\mathbin{\Longleftarrow}"
+
+%format <->     = "\mathbin{\leftrightarrow}"
+%format <=>     = "\mathbin{\Leftrightarrow}"
+
+%format <-->    = "\mathbin{\longleftrightarrow}"
+%format <==>    = "\mathbin{\Longleftrightarrow}"
+
+%format ~>      = "\mathbin{\rightwavearrow}"
+%format ~~>     = "\mathbin{\rightsquigarrow}"
+
+%format +->     = "\mathbin{\mapsto}"
