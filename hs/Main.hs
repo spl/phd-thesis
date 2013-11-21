@@ -63,11 +63,11 @@ specialVarids = injectId Varid $ mconcat
 
 --------------------------------------------------------------------------------
 
-eqlabelR :: TeX -> TeX
-eqlabelR = TMacro "eqlabel"
+eqlabelR :: Text -> TeX
+eqlabelR = TMacro "eqlabel" . TRaw
 
 mkRule :: Maybe Text -> Text -> Format
-mkRule pre t = Plain $ id *** eqlabelR . TRaw $ case pre of
+mkRule pre t = Plain $ id *** eqlabelR $ case pre of
   Nothing  -> (t, t)
   Just pre -> (pre <> t, pre <> "-" <> t)
 
