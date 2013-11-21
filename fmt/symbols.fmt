@@ -6,6 +6,7 @@
 %format +-      = "\vdash "
 
 %format ::      = "∷"
+%format :=      = "≔"
 %format ::=     = "⩴"
 
 %format |       = "\mathrel{\;|\;}"
