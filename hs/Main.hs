@@ -39,8 +39,8 @@ commonConids = injectId Conid $ mconcat
 
 --------------------------------------------------------------------------------
 
-specialBase :: Page
-specialBase = S.fromList $ map Plain
+specialBaseV :: Page
+specialBaseV = S.fromList $ map Plain
   [ ("ty",    tauR)                  -- Type
   , ("tz",    upsilonR)              -- Type
   , ("tyf",   mathringR tauR)        -- Type functor
@@ -49,16 +49,28 @@ specialBase = S.fromList $ map Plain
   , ("scf",   mathringR varsigmaR)   -- Type scheme
   , ("sb",    thetaR)                -- Substitution
   , ("sbf",   mathringR thetaR)      -- Substitution for type functors
-  , ("env",   gammaR_)               -- Type environment
+  ]
+
+specialBaseC :: Page
+specialBaseC = S.fromList $ map Plain
+  [ ("env",   gammaR_)               -- Type environment
   , ("envf",  mathringR gammaR_)     -- Type functor environment
   ]
 
 specialVarids :: Page
 specialVarids = injectId Varid $ mconcat
-  [ specialBase
-  , primesWith [1..3] specialBase
-  , subWith (range 0 4) specialBase
-  , subWith latinLower specialBase
+  [ specialBaseV
+  , primesWith [1..3] specialBaseV
+  , subWith (range 0 4) specialBaseV
+  , subWith latinLower specialBaseV
+  ]
+
+specialConids :: Page
+specialConids = injectId Conid $ mconcat
+  [ specialBaseC
+  , primesWith [1..3] specialBaseC
+  , subWith (range 0 4) specialBaseC
+  , subWith latinLower specialBaseC
   ]
 
 --------------------------------------------------------------------------------
@@ -117,6 +129,7 @@ pages = mconcat
   [ commonVarids
   , commonConids
   , specialVarids
+  , specialConids
   , rules
   , mathKws
   ]
