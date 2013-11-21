@@ -54,9 +54,6 @@
 
 % Symbols
 
-% Keywords
-%format fix = "\mathbf{fix}"
-
 % mathscr
 %format G = "\mathscr{G}"
 %format (Gen(e)(t)) = "{" G "}_{" e "}(" t ")"

@@ -89,12 +89,36 @@ rules = mconcat
 
 --------------------------------------------------------------------------------
 
+mathkwR :: Text -> TeX
+mathkwR = TMacro "mathkw" . TRaw
+
+mkMathKw :: Text -> Format
+mkMathKw = mkPlainWith mathkwR
+
+mkMathKws :: [Text] -> Page
+mkMathKws = S.fromList . map mkMathKw
+
+mathKws :: Page
+mathKws = mkMathKws
+  ["let","in","where"
+  ,"if","then","else","as"
+  ,"case","of"
+  ,"class","instance"
+  ,"type","data","newtype","family"
+  ,"infix","infixl","infixr"
+  ,"do"
+  ,"fix"
+  ]
+
+--------------------------------------------------------------------------------
+
 pages :: Page
 pages = mconcat
   [ commonVarids
   , commonConids
   , specialVarids
   , rules
+  , mathKws
   ]
 
 main :: IO ()

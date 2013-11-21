@@ -89,6 +89,10 @@ fromChar = fromString . return
 mkPlain :: Text -> TeX -> Format
 mkPlain = curry Plain
 
+-- A 'plain' format with text on the lhs and modified text on the rhs
+mkPlainWith :: (Text -> TeX) -> Text -> Format
+mkPlainWith f t = mkPlain t (f t)
+
 -- A format with the arg on the lhs and a constant macro of the arg on the rhs
 mkConst :: Text -> Format
 mkConst t = mkPlain t $ TConst t
