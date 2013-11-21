@@ -6,6 +6,7 @@
 %include spaces.fmt
 %include arrows.fmt
 %include symbols.fmt
+%include syntax.fmt
 
 
 %-------------------------------------------------------------------------------
