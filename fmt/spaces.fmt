@@ -1,0 +1,11 @@
+%format ^               = "\,"
+
+%format negative        = "\!{}"
+%format small           = "\,{}"
+%format medium          = "\:{}"
+%format large           = "\;{}"
+%format quad            = "\quad{}"
+%format qquad           = "\qquad{}"
+
+% Around ::= in syntax definitions
+%format synspace        = medium

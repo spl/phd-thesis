@@ -3,7 +3,7 @@
 %-------------------------------------------------------------------------------
 
 %include polycode.fmt
-%include spacing.fmt
+%include spaces.fmt
 %include arrows.fmt
 %include symbols.fmt
 
@@ -24,19 +24,10 @@
 %   SPACING
 %-------------------------------------------------------------------------------
 
-%format negSpace    = "\!"
-%format smSpace     = "\,"
-%format mdSpace     = "\:"
-%format lgSpace     = "\;"
-%format quad        = "\quad"
-%format qquad       = "\qquad"
-
 % Rule spacing
 %format labelPadding  = negSpace
 %format rulePadding   = quad
 %format ruleRhs       = lgSpace
-
-%format ^ = "\,"
 
 
 %-------------------------------------------------------------------------------
