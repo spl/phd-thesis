@@ -91,7 +91,7 @@ mkRules x y = S.fromList $ cproductL (mkRule . Just) x y
 
 rules :: Page
 rules = mconcat
-  [ toRules ["Tra","Rew","R","RS","Var","App","Lam","Fix","Let"]
+  [ toRules ["Tra","Rew","R","RS","Con","Var","App","Lam","Fix","Let"]
   , mkRules ["T","C","P"] ["Var","App","Lam","Fix","Let","Rew"]
   , mkRules ["TT"] ["Abs","Rep","Comp"]
   , mkRules ["M","S"] ["Var","App","MVar"]
