@@ -1,0 +1,7 @@
+%format (sup(f)(x))             = "{" f "}^{" x "}"
+%format (sup'(f)(x))            = "{" f "}\,^{" x "}"
+%format (sub(f)(x))             = "{" f "}_{" x "}"
+
+%format (p_app(f)(x))           = "{" f "}(" x ")"
+%format (p_app'(f)(x))          = "{" f "}\,(" x ")"
+%format (a_app(f)(x))           = "{" f "}\langle{}" x "\rangle{}"
