@@ -4,19 +4,19 @@
 
 \begin{figure}[t]
 \begin{tabular}{l @@{|quad|} l @@{|synspace ::= synspace|} l}
-Terms
+|expsyn|
 &
 |e,f|
 &
-|x || f e || \ x . e|
+|n || s || x || f e || \ x . e|
 \\
-Types
+|typsyn|
 &
 |ty,tz|
 &
-|bty || ty -> tz|
+|numty || strty || ty -> tz|
 \\
-Environments
+|envsyn|
 &
 |env|
 &
@@ -29,9 +29,13 @@ Environments
 \begin{figure}[t]
 \[\boxed{|env +- e : ty|}\]
 \begin{mathpar}
-\inferrule*[right=|Con|]
+\inferrule*[right=|Num|]
            { }
-           {|env +- b : bty|}
+           {|env +- n : numty|}
+\and
+\inferrule*[right=|Str|]
+           { }
+           {|env +- s : strty|}
 \and
 \inferrule*[right=|Var|]
            {|ty `inst` (p_app(env)(x))|}
@@ -44,7 +48,7 @@ Environments
 \and
 \inferrule*[right=|Lam|]
            {|env, x : ty +- e : tz|}
-           {|env +- \ x . e : ty -> tz|}
+           {|env +- \ x : ty . e : ty -> tz|}
 \end{mathpar}
 \caption{Typing inference rules for the simply typed lambda-calculus}
 \label{fig:typing}

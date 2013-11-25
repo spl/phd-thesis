@@ -91,7 +91,7 @@ mkRules x y = S.fromList $ cproductL (mkRule . Just) x y
 
 rules :: Page
 rules = mconcat
-  [ toRules ["Tra","Rew","R","RS","Con","Var","App","Lam","Fix","Let"]
+  [ toRules ["Tra","Rew","R","RS","Num","Str","Var","App","Lam","Fix","Let"]
   , mkRules ["T","C","P"] ["Var","App","Lam","Fix","Let","Rew"]
   , mkRules ["TT"] ["Abs","Rep","Comp"]
   , mkRules ["M","S"] ["Var","App","MVar"]
@@ -124,6 +124,26 @@ mathKws = mkMathKws
 
 --------------------------------------------------------------------------------
 
+typR :: Text -> TeX
+typR = TMacro "typ" . TRaw
+
+mkTyp :: (Text,Text) -> Format
+mkTyp = Plain . (id *** typR)
+
+mkTyps :: [(Text,Text)] -> Page
+mkTyps = S.fromList . map mkTyp
+
+typs :: Page
+typs = mkTyps
+  [("expsyn","Exp")
+  ,("typsyn","Typ")
+  ,("envsyn","Env")
+  ,("numty","N")
+  ,("strty","S")
+  ]
+
+--------------------------------------------------------------------------------
+
 pages :: Page
 pages = mconcat
   [ commonVarids
@@ -132,6 +152,7 @@ pages = mconcat
   , specialConids
   , rules
   , mathKws
+  , typs
   ]
 
 main :: IO ()

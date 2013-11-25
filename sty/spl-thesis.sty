@@ -47,6 +47,9 @@
 % Unicode fonts for text and math (cannot be followed by 'amsmath')
 \RequirePackage{unicode-math}
 
+% Font families
+\newfontfamily\typfamily[Scale=MatchUppercase]{Futura Std Book}
+
 %\setmathfont{Garamond Premier Pro}
 \setmathfont[Scale=MatchUppercase]{XITS Math}
 
@@ -71,7 +74,6 @@
 % Asana Math: forall, exists, ++
 \setmathfont[range={"2200,"2203,"29FA}]{Asana Math}
 \setmathfont[range={"2032}]{Asana Math}
-
 
 %-------------------------------------------------------------------------------
 %   SYMBOLS
@@ -175,6 +177,9 @@
 
 % Math keyword
 \newcommand{\mathkw}[1]{\ensuremath{\text{\textbf{#1}}}}
+
+% Type
+\newcommand{\typ}[1]{\ensuremath{\text{\typfamily #1}}}
 
 
 %-------------------------------------------------------------------------------
