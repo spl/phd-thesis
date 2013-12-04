@@ -1,5 +1,3 @@
-%include spl-thesis.fmt
-
 \chapter{STLC}
 
 \begin{figure}[t]

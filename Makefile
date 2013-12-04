@@ -14,8 +14,8 @@ STYDIR := sty
 BIBDIR := bib
 
 # Files
-TEXFILES := $(patsubst $(SRCDIR)/%.lhs, $(OUTDIR)/%.tex, $(wildcard $(SRCDIR)/*.lhs))
-FMTFILES := $(OUTDIR)/gen.fmt $(patsubst $(FMTDIR)/%, $(OUTDIR)/%, $(wildcard $(FMTDIR)/*.fmt))
+LHSFILES := $(patsubst $(SRCDIR)/%, $(OUTDIR)/%, $(wildcard $(SRCDIR)/*.lhs))
+FMTFILES := $(patsubst $(FMTDIR)/%, $(OUTDIR)/%, $(wildcard $(FMTDIR)/*.fmt)) $(OUTDIR)/gen.fmt
 STYFILES := $(patsubst $(STYDIR)/%, $(OUTDIR)/%, $(wildcard $(STYDIR)/*.sty))
 BIBFILES := $(patsubst $(BIBDIR)/%, $(OUTDIR)/%, $(wildcard $(BIBDIR)/*.bib))
 
@@ -40,9 +40,12 @@ clean:
 #-------------------------------------------------------------------------------
 # Specific Rules
 
-$(OUTDIR)/main.pdf: $(TEXFILES) $(STYFILES) $(BIBFILES)
+$(OUTDIR)/main.pdf: $(OUTDIR)/main.tex $(STYFILES) $(BIBFILES)
 	(cd $(OUTDIR); $(LATEXMK) $(LATEXMKFLAGS) main.tex)
 	touch $@
+
+$(OUTDIR)/main.tex: $(OUTDIR)/main.lhs $(LHSFILES) $(FMTFILES)
+	(cd $(OUTDIR); $(LHS2TEX) $(LHS2TEXFLAGS) -o $(notdir $@) $(notdir $<))
 
 $(OUTDIR):
 	mkdir $@
@@ -54,13 +57,10 @@ $(HSDIR)/dist/build/fmt/fmt: $(HSDIR)/Format.hs $(HSDIR)/Main.hs $(HSDIR)/fmt.ca
 	(cd $(HSDIR); cabal configure; cabal build)
 
 # The output directory is an order-only prerequisite.
-$(TEXFILES) $(FMTFILES) $(STYFILES) $(BIBFILES): | $(OUTDIR)
+$(LHSFILES) $(FMTFILES) $(STYFILES) $(BIBFILES): | $(OUTDIR)
 
 #-------------------------------------------------------------------------------
 # Pattern Rules
-
-$(OUTDIR)/%.tex: $(OUTDIR)/%.lhs $(FMTFILES)
-	(cd $(OUTDIR); $(LHS2TEX) $(LHS2TEXFLAGS) -o $(notdir $@) $(notdir $<))
 
 $(OUTDIR)/%.lhs: $(SRCDIR)/%.lhs
 	cp $< $@

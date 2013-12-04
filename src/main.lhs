@@ -18,14 +18,14 @@
 
 \mainmatter
 
-\include{1intro}
-\include{2stlc}
-\include{3fix}
-\include{4pattern}
-\include{5systemf}
-\include{6poly}
-\include{7types}
-\include{8conclusion}
+%include 1intro.lhs
+%include 2stlc.lhs
+%include 3fix.lhs
+%include 4pattern.lhs
+%include 5systemf.lhs
+%include 6poly.lhs
+%include 7types.lhs
+%include 8conclusion.lhs
 
 \backmatter
 
