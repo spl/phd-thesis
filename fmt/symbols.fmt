@@ -1,18 +1,18 @@
-%format forall  = "∀"
-%format exists  = "∃"
+%format forall  = "\forall{}"
+%format exists  = "\exists{}"
 
-%format Lambda  = "Λ"
+%format \       = "\text{\robotoslabfamily{}λ}"
+%format Lambda  = "\Lambda{}"
 
-%format +-      = "\vdash "
+%format +-      = "\vdash{}"
 
-%format ::      = "∷"
-%format :=      = "≔"
-%format ::=     = "⩴"
+%format ::      = "\kern.0625em\mathord{\text{\robotoslabfamily{}:}}\kern.0625em"
+%format :=      = "\mathbin{\text{\robotoslabfamily{}=}}"
+%format ::=     = "\Coloneq{}"
 
 %format |       = "\mathrel{\;|\;}"
 
-%format ++      = "⧺"
-%format ..      = "\mathinner{‥}"
+%format ++      = "\doubleplus{}"
 
 %format .       = "."
-%format `o`     = "∘"
+%format `o`     = "\vysmwhtcircle{}"

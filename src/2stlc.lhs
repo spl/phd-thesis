@@ -1,20 +1,20 @@
 \chapter{STLC}
 
-\begin{figure}[t]
+\begin{figure}[h]
 \begin{tabular}{l @@{|quad|} l @@{|synspace ::= synspace|} l}
-|expsyn|
+|S.exp|
 &
 |e,f|
 &
-|n || s || x || f e || \ x . e|
+|n || s || x || f e || \ x :: ty . e|
 \\
-|typsyn|
+|S.typ|
 &
 |ty,tz|
 &
-|numty || strty || ty -> tz|
+|T.num || T.str || ty -> tz|
 \\
-|envsyn|
+|S.env|
 &
 |env|
 &
@@ -24,31 +24,30 @@
 \label{fig:obj-lang-syn}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[h]
 \[\boxed{|env +- e : ty|}\]
 \begin{mathpar}
-\inferrule*[right=|Num|]
+\inferrule*[right=|R.num|]
            { }
-           {|env +- n : numty|}
+           {|env +- n : T.num|}
 \and
-\inferrule*[right=|Str|]
+\inferrule*[right=|R.str|]
            { }
-           {|env +- s : strty|}
+           {|env +- s : T.str|}
 \and
-\inferrule*[right=|Var|]
+\inferrule*[right=|R.var|]
            {|ty `inst` (p_app(env)(x))|}
            {|env +- x : ty|}
 \and
-\inferrule*[right=|App|]
+\inferrule*[right=|R.app|]
            {|env +- f : ty -> tz| \and
             |env +- e : ty |}
            {|env +- f e : tz|}
 \and
-\inferrule*[right=|Lam|]
+\inferrule*[right=|R.lam|]
            {|env, x : ty +- e : tz|}
-           {|env +- \ x : ty . e : ty -> tz|}
+           {|env +- \ x :: ty . e : ty -> tz|}
 \end{mathpar}
 \caption{Typing inference rules for the simply typed lambda-calculus}
 \label{fig:typing}
 \end{figure}
-

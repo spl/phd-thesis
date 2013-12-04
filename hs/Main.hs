@@ -17,30 +17,33 @@ import qualified Data.Sequence as S
 
 --------------------------------------------------------------------------------
 
-commonVarids :: Page
-commonVarids = injectId Varid $ mconcat
+commonMetaids :: Page
+commonMetaids = injectMacro "Metaid" $ mconcat
   [ latinLower
-  , primesWith [1..3] latinLower
+  , latinUpper
+  , primesWith macroPrimes [1..3] latinLower
   , subWith (range 0 4) latinLower
   , greekLower
-  , primesWith [1..3] greekLower
+  , primesWith macroPrimes [1..3] greekLower
   , subWith (range 0 4) greekLower
   ]
 
+commonVarids :: Page
+commonVarids = prefixLhs "V." $ injectMacro "Varid" $ mconcat
+  [ latinLower
+  , primesWith straightQuotePrimes [1..2] latinLower
+  ]
+
 commonConids :: Page
-commonConids = injectId Conid $ mconcat
+commonConids = prefixLhs "C." $ injectMacro "Conid" $ mconcat
   [ latinUpper
-  , primesWith [1..3] latinUpper
-  , subWith (range 0 4) latinUpper
-  , greekUpper
-  , primesWith [1..3] greekUpper
-  , subWith (range 0 4) greekUpper
+  , primesWith straightQuotePrimes [1..2] latinUpper
   ]
 
 --------------------------------------------------------------------------------
 
-specialBaseV :: Page
-specialBaseV = S.fromList $ map Plain
+otherMetaidsBase :: Page
+otherMetaidsBase = S.fromList $ map mkPlain
   [ ("ty",    tauR)                  -- Type
   , ("tz",    upsilonR)              -- Type
   , ("tyf",   mathringR tauR)        -- Type functor
@@ -49,28 +52,47 @@ specialBaseV = S.fromList $ map Plain
   , ("scf",   mathringR varsigmaR)   -- Type scheme
   , ("sb",    thetaR)                -- Substitution
   , ("sbf",   mathringR thetaR)      -- Substitution for type functors
-  ]
-
-specialBaseC :: Page
-specialBaseC = S.fromList $ map Plain
-  [ ("env",   gammaR_)               -- Type environment
+  , ("env",   gammaR_)               -- Type environment
   , ("envf",  mathringR gammaR_)     -- Type functor environment
   ]
 
-specialVarids :: Page
-specialVarids = injectId Varid $ mconcat
-  [ specialBaseV
-  , primesWith [1..3] specialBaseV
-  , subWith (range 0 4) specialBaseV
-  , subWith latinLower specialBaseV
+otherMetaids :: Page
+otherMetaids = injectMacro "Metaid" $ mconcat
+  [ otherMetaidsBase
+  , primesWith tickPrimes [1..3] otherMetaidsBase
+  , subWith (range 0 4) otherMetaidsBase
+  , subWith latinLower otherMetaidsBase
   ]
 
-specialConids :: Page
-specialConids = injectId Conid $ mconcat
-  [ specialBaseC
-  , primesWith [1..3] specialBaseC
-  , subWith (range 0 4) specialBaseC
-  , subWith latinLower specialBaseC
+--------------------------------------------------------------------------------
+
+otherConids :: Page
+otherConids = injectMacro "Conid" $ S.fromList $ map mkPlain
+  [ ("T.num",   "N")            -- Numbers
+  , ("T.str",   "S")            -- Strings
+  ]
+
+--------------------------------------------------------------------------------
+
+synids :: Page
+synids = injectMacro "Synid" $ S.fromList $ map mkPlain
+  [ ("S.exp",   "Exp")          -- Expressions/terms
+  , ("S.typ",   "Typ")          -- Types
+  , ("S.env",   "Env")          -- Environment
+  ]
+
+--------------------------------------------------------------------------------
+
+keywords :: Page
+keywords = injectMacro "Keyword" $ fromList fromString $
+  [ "let", "in", "where"
+  , "if", "then", "else", "as"
+  , "case", "of"
+  , "class", "instance"
+  , "type", "data", "newtype", "family"
+  , "infix", "infixl", "infixr"
+  , "do"
+  , "fix"
   ]
 
 --------------------------------------------------------------------------------
@@ -79,7 +101,7 @@ eqlabelR :: Text -> TeX
 eqlabelR = TMacro "eqlabel" . TRaw
 
 mkRule :: Maybe Text -> Text -> Format
-mkRule pre t = Plain $ id *** eqlabelR $ case pre of
+mkRule pre t = mkPlain $ ("R." <>) *** eqlabelR $ case pre of
   Nothing  -> (t, t)
   Just pre -> (pre <> t, pre <> "-" <> t)
 
@@ -91,68 +113,26 @@ mkRules x y = S.fromList $ cproductL (mkRule . Just) x y
 
 rules :: Page
 rules = mconcat
-  [ toRules ["Tra","Rew","R","RS","Num","Str","Var","App","Lam","Fix","Let"]
-  , mkRules ["T","C","P"] ["Var","App","Lam","Fix","Let","Rew"]
-  , mkRules ["TT"] ["Abs","Rep","Comp"]
-  , mkRules ["M","S"] ["Var","App","MVar"]
-  , mkRules ["P"] ["Var","App"]
-  , mkRules ["Red"] ["Lam","Let","Fix"]
-  ]
-
---------------------------------------------------------------------------------
-
-mathkwR :: Text -> TeX
-mathkwR = TMacro "mathkw" . TRaw
-
-mkMathKw :: Text -> Format
-mkMathKw = mkPlainWith mathkwR
-
-mkMathKws :: [Text] -> Page
-mkMathKws = S.fromList . map mkMathKw
-
-mathKws :: Page
-mathKws = mkMathKws
-  ["let","in","where"
-  ,"if","then","else","as"
-  ,"case","of"
-  ,"class","instance"
-  ,"type","data","newtype","family"
-  ,"infix","infixl","infixr"
-  ,"do"
-  ,"fix"
-  ]
-
---------------------------------------------------------------------------------
-
-typR :: Text -> TeX
-typR = TMacro "typ" . TRaw
-
-mkTyp :: (Text,Text) -> Format
-mkTyp = Plain . (id *** typR)
-
-mkTyps :: [(Text,Text)] -> Page
-mkTyps = S.fromList . map mkTyp
-
-typs :: Page
-typs = mkTyps
-  [("expsyn","Exp")
-  ,("typsyn","Typ")
-  ,("envsyn","Env")
-  ,("numty","N")
-  ,("strty","S")
+  [ toRules ["tra","rew","r","rs","num","str","var","app","lam","fix","let"]
+  , mkRules ["t","c","p"] ["var","app","lam","fix","let","rew"]
+  , mkRules ["tt"] ["abs","rep","comp"]
+  , mkRules ["m","s"] ["var","app","mvar"]
+  , mkRules ["p"] ["var","app"]
+  , mkRules ["red"] ["lam","let","fix"]
   ]
 
 --------------------------------------------------------------------------------
 
 pages :: Page
 pages = mconcat
-  [ commonVarids
+  [ commonMetaids
+  , commonVarids
   , commonConids
-  , specialVarids
-  , specialConids
+  , otherMetaids
+  , otherConids
+  , synids
+  , keywords
   , rules
-  , mathKws
-  , typs
   ]
 
 main :: IO ()

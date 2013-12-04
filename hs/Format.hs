@@ -25,24 +25,42 @@ import qualified Data.Text.Lazy.Builder as B
 
 import Data.String (IsString(..))
 
-import Control.Arrow ((***))
+import Control.Arrow (first, second, (***))
 
 --------------------------------------------------------------------------------
 
 type Page = Seq Format
 
 data Form a
-  = Plain a           -- Unadorned
-  | Sub a a           -- Subscript
-  | Super a a         -- Superscript
-  | Indexed a a a     -- Both subscript and superscript
-  | Prime a Int       -- Primes
-  | SubPrime a a Int  -- Subscript and primes
-  deriving (Eq, Functor, Ord, Show)
+  = Plain a                       -- Unadorned
+  | Sub a a                       -- Subscript
+  | Super a a                     -- Superscript
+  | Indexed a a a                 -- Both subscript and superscript
+  | Prime (Int -> TeX) Int a      -- Prime with macro and count
+  | SubPrime (Int -> TeX) Int a a -- Subscript and prime with macro and count
+  deriving Functor
 
 type Lhs    = Form Text
-type Rhs    = Form TeX
-type Format = Form (Text, TeX)
+type Rhs    = Form (Text, TeX)
+
+--------------------------------------------------------------------------------
+
+data Format = Format Text Text (Form (Text, Text, TeX))
+
+instance Eq Format where
+  f1 == f2 = case (split f1,split f2) of
+    ((pre1,post1,lhs1,_),(pre2,post2,lhs2,_)) ->
+      (pre1,pprLhs lhs1,post1) == (pre2,pprLhs lhs2,post2)
+
+instance Ord Format where
+  f1 <= f2 = case (split f1,split f2) of
+    ((pre1,post1,lhs1,_),(pre2,post2,lhs2,_)) ->
+      (pre1,pprLhs lhs1,post1) <= (pre2,pprLhs lhs2,post2)
+
+mapFormat :: ((Text, Text, TeX) -> (Text, Text, TeX)) -> Format -> Format
+mapFormat f (Format pre post x) = Format pre post (fmap f x)
+
+--------------------------------------------------------------------------------
 
 data TeX
   = TEmpty            -- Empty
@@ -52,8 +70,6 @@ data TeX
   | TBraces TeX       -- Braces
   | TSeq TeX TeX      -- Sequencing
   deriving (Eq, Ord, Show)
-
---------------------------------------------------------------------------------
 
 instance Monoid TeX where
   mempty  = TEmpty
@@ -67,11 +83,8 @@ instance IsString Lhs where
 instance IsString TeX where
   fromString = TRaw . fromString
 
-instance IsString Rhs where
-  fromString = Plain . fromString
-
 instance IsString Format where
-  fromString s = Plain (fromString s, fromString s)
+  fromString s = Format "" "" (Plain (fromString s, "", fromString s))
 
 --------------------------------------------------------------------------------
 
@@ -86,57 +99,73 @@ fromChar :: Char -> Format
 fromChar = fromString . return
 
 -- A 'plain' format with text on the lhs and TeX on the rhs
-mkPlain :: Text -> TeX -> Format
-mkPlain = curry Plain
+mkPlain :: (Text, TeX) -> Format
+mkPlain (l,r) = Format "" "" $ Plain (l,"",r)
 
 -- A 'plain' format with text on the lhs and modified text on the rhs
 mkPlainWith :: (Text -> TeX) -> Text -> Format
-mkPlainWith f t = mkPlain t (f t)
+mkPlainWith f t = mkPlain (t,f t)
 
 -- A format with the arg on the lhs and a constant macro of the arg on the rhs
-mkConst :: Text -> Format
-mkConst t = mkPlain t $ TConst t
+mkPlainConst :: Text -> Format
+mkPlainConst = mkPlainWith TConst
 
 subWithF :: Monoid a => a -> Form a -> Form a
-subWithF yb (Plain x)         = Sub x yb
-subWithF yb (Sub x xb)        = Sub x (xb <> yb)
-subWithF yb (Super x xp)      = Indexed x yb xp
-subWithF yb (Indexed x xb xp) = Indexed x (xb <> yb) xp
-subWithF yb (Prime x m)       = SubPrime x yb m
-subWithF yb (SubPrime x xb m) = SubPrime x (xb <> yb) m
+subWithF yb (Plain x)           = Sub x yb
+subWithF yb (Sub x xb)          = Sub x (xb <> yb)
+subWithF yb (Super x xp)        = Indexed x yb xp
+subWithF yb (Indexed x xb xp)   = Indexed x (xb <> yb) xp
+subWithF yb (Prime f n x)       = SubPrime f n x yb
+subWithF yb (SubPrime f n x xb) = SubPrime f n x (xb <> yb)
 
 superWithF :: Monoid a => a -> Form a -> Form a
 superWithF yp (Plain x)         = Super x yp
 superWithF yp (Sub x xb)        = Indexed x xb yp
 superWithF yp (Super x xp)      = Super x (xp <> yp)
 superWithF yp (Indexed x xb xp) = Indexed x xb (xp <> yp)
-superWithF yp (Prime x m)       = error "Format.superWithF: Cannot superscript a prime."
-superWithF yp (SubPrime x xb m) = error "Format.superWithF: Cannot superscript a subscript and prime."
+superWithF yp (Prime{})         = error "Format.superWithF: Cannot superscript a prime."
+superWithF yp (SubPrime{})      = error "Format.superWithF: Cannot superscript a subscript and prime."
 
 subWith :: Page -> Page -> Page
-subWith = cproductS' (\(Plain xb) yp -> subWithF xb yp)
+subWith = cproductS' $
+  \(Format pre1 post1 (Plain xb)) (Format pre2 post2 yp) ->
+    Format (pre1 <> pre1) (post1 <> post1) $ subWithF xb yp
 
 superWith :: Page -> Page -> Page
-superWith = cproductS' (\(Plain xb) yp -> superWithF xb yp)
+superWith = cproductS' $
+  \(Format pre1 post1 (Plain xb)) (Format pre2 post2 yp) ->
+    Format (pre1 <> pre1) (post1 <> post1) $ superWithF xb yp
 
-primeWithF :: Int -> Form a -> Form a
-primeWithF n (Plain x)         = Prime x n
-primeWithF n (Sub x xb)        = SubPrime x xb n
-primeWithF n (Super x xp)      = error "Format.primeWithF: Cannot prime a superscript."
-primeWithF n (Indexed x xb xp) = error "Format.primeWithF: Cannot prime a subscript and superscript."
-primeWithF n (Prime x _)       = Prime x n
-primeWithF n (SubPrime x xb _) = SubPrime x xb n
+primeWithF :: (Int -> TeX) -> Int -> Form a -> Form a
+primeWithF f n (Plain x)           = Prime f n x
+primeWithF f n (Sub x xb)          = SubPrime f n x xb
+primeWithF _ _ (Super{})           = error "Format.primeWithF: Cannot prime a superscript."
+primeWithF _ _ (Indexed{})         = error "Format.primeWithF: Cannot prime a subscript and superscript."
+primeWithF _ _ (Prime{})           = error "Format.primeWithF: Cannot prime a prime."
+primeWithF _ _ (SubPrime{})        = error "Format.primeWithF: Cannot prime a subscript and prime."
 
-primeWith :: Int -> Page -> Page
-primeWith n = fmap (primeWithF n)
+primeWithFormat :: (Int -> TeX) -> Int -> Format -> Format
+primeWithFormat f n (Format pre post x) = Format pre post (primeWithF f n x)
 
-primesWith :: [Int] -> Page -> Page
-primesWith ns p = mconcat (fmap (\i -> fmap (primeWithF i) p) ns)
+primeWith :: (Int -> TeX) -> Int -> Page -> Page
+primeWith f n = fmap (primeWithFormat f n)
 
--- Pair two formats into one by combining the lhs/rhs of each
-pairF :: (Text -> Text -> Text) -> (TeX -> TeX -> TeX) -> Format -> Format -> Format
-pairF fl fr (Plain (l1,r1)) (Plain (l2,r2)) = Plain (fl l1 l2, fr r1 r2)
-pairF fl fr _               _               = error "Format.pairF: cannot pair non-Plain formats"
+primesWith :: (Int -> TeX) -> [Int] -> Page -> Page
+primesWith f ns p = mconcat (fmap (\n -> fmap (primeWithFormat f n) p) ns)
+
+tickPrimes :: Int -> TeX
+tickPrimes n = TRaw $ TS.replicate n "'"
+
+macroPrimes :: Int -> TeX
+macroPrimes n = TRaw "^" <> TConst (case n of
+  1 -> "prime"
+  2 -> "dprime"
+  3 -> "trprime"
+  4 -> "qprime"
+  _ -> error $ "Format.macroPrimes: " <> show n <> " primes not supported.")
+
+straightQuotePrimes :: Int -> TeX
+straightQuotePrimes n = mconcat $ replicate n $ TConst "mathstraightquote"
 
 --------------------------------------------------------------------------------
 
@@ -146,40 +175,43 @@ fromList f = foldMap (S.singleton . f)
 fromSeq :: (a -> Format) -> Seq a -> Page
 fromSeq = fmap
 
-combine :: Lhs -> Rhs -> Maybe Format
-combine (Plain x)         (Plain y)         = Just $ Plain (x,y)
-combine (Sub x xb)        (Sub y yb)        = Just $ Sub (x,y) (xb,yb)
-combine (Super x xp)      (Super y yp)      = Just $ Super (x,y) (xp,yp)
-combine (Indexed x xb xp) (Indexed y yb yp) = Just $ Indexed (x,y) (xb,yb) (xp,yp)
-combine (Prime x m)       (Prime y n)
-  | m == n                                  = Just $ Prime (x,y) m
-combine (SubPrime x xb m) (SubPrime y yb n)
-  | m == n                                  = Just $ SubPrime (x,y) (xb,yb) m
-combine _                 _                 = Nothing
+--------------------------------------------------------------------------------
+
+prefixLhs :: Text -> Page -> Page
+prefixLhs pre = fmap f
+  where
+    f (Format _ post x) = Format pre post x
+
+injectMacro :: Text -> Page -> Page
+injectMacro m = fmap (mapFormat (\(l,_,r) -> (l,m,r)))
 
 --------------------------------------------------------------------------------
 
 -- Format deconstruction
 
-split :: Format -> (Lhs, Rhs)
-split (Plain (x,y))                   = (Plain x,Plain y)
-split (Sub (x,y) (xb,yb))             = (Sub x xb,Sub y yb)
-split (Super (x,y) (xp,yp))           = (Super x xp,Super y yp)
-split (Indexed (x,y) (xb,yb) (xp,yp)) = (Indexed x xb xp,Indexed y yb yp)
-split (Prime (x,y) n)                 = (Prime x n,Prime y n)
-split (SubPrime (x,y) (xb,yb) n)      = (SubPrime x xb n,SubPrime y yb n)
+split :: Format -> (Text, Text, Lhs, Rhs)
+split (Format pre post form) = case split' form of
+  (lhs,rhs) -> (pre,post,lhs,rhs)
+  where
+    split' :: Form (Text, Text, TeX) -> (Lhs, Rhs)
+    split' (Plain (x,m,y))                           = (Plain x           , Plain (m,y))
+    split' (Sub (x,m,y) (xb,mb,yb))                  = (Sub x xb          , Sub (m,y) (mb,yb))
+    split' (Super (x,m,y) (xp,mp,yp))                = (Super x xp        , Super (m,y) (mp,yp))
+    split' (Indexed (x,m,y) (xb,mb,yb) (xp,mp,yp))   = (Indexed x xb xp   , Indexed (m,y) (mb,yb) (mp,yp))
+    split' (Prime f n (x,m,y))                       = (Prime f n x       , Prime f n (m,y))
+    split' (SubPrime f n (x,m,y) (xb,mb,yb))         = (SubPrime f n x xb , SubPrime f n (m,y) (mb,yb))
 
 --------------------------------------------------------------------------------
 
 -- Format pretty-printing
 
 pprLhs :: Lhs -> Builder
-pprLhs (Plain x)         = B.fromText x
-pprLhs (Sub x xb)        = B.fromText x <> B.singleton '_' <> B.fromText xb
-pprLhs (Super x xp)      = B.fromText x <> B.singleton '\'' <> B.fromText xp
-pprLhs (Indexed x xb xp) = B.fromText x <> B.singleton '_' <> B.fromText xb <> B.singleton '\'' <> B.fromText xp
-pprLhs (Prime x n)       = B.fromText x <> B.fromText (TS.replicate n "'")
-pprLhs (SubPrime x xb n) = B.fromText x <> B.singleton '_' <> B.fromText xb <> B.fromText (TS.replicate n "'")
+pprLhs (Plain x)           = B.fromText x
+pprLhs (Sub x xb)          = B.fromText x <> B.singleton '_' <> B.fromText xb
+pprLhs (Super x xp)        = B.fromText x <> B.singleton '\'' <> B.fromText xp
+pprLhs (Indexed x xb xp)   = B.fromText x <> B.singleton '_' <> B.fromText xb <> B.singleton '\'' <> B.fromText xp
+pprLhs (Prime _ n x)       = B.fromText x <> pprLhsPrimes n
+pprLhs (SubPrime _ n x xb) = B.fromText x <> B.singleton '_' <> B.fromText xb <> pprLhsPrimes n
 
 pprTeX :: TeX -> Builder
 pprTeX TEmpty        = B.fromString ""
@@ -189,25 +221,28 @@ pprTeX (TMacro nm t) = B.singleton '\\' <> B.fromText nm <> B.singleton '{' <> p
 pprTeX (TBraces t)   = B.singleton '{' <> pprTeX t <> B.singleton '}'
 pprTeX (TSeq t1 t2)  = pprTeX t1 <> pprTeX t2
 
-pprRhs :: Rhs -> Builder
-pprRhs (Plain x)         = pprTeX x
-pprRhs (Sub x xb)        = B.singleton '{' <> pprTeX x <> B.fromString "}_{" <> pprTeX xb <> B.singleton '}'
-pprRhs (Super x xp)      = B.singleton '{' <> pprTeX x <> B.fromString "}^{" <> pprTeX xp <> B.singleton '}'
-pprRhs (Indexed x xb xp) = B.singleton '{' <> pprTeX x <> B.fromString "}_{" <> pprTeX xb <> B.fromString "}^{" <> pprTeX xb <> B.singleton '}'
-pprRhs (Prime x n)       = pprTeX x <> pprPrimes n
-pprRhs (SubPrime x xb n) = B.singleton '{' <> pprTeX x <> pprPrimes n <> B.fromString "}_{" <> pprTeX xb <> B.singleton '}'
+pprMacro :: (Text, TeX) -> Builder
+pprMacro (m,x) | TS.null m = pprTeX x
+               | otherwise = pprTeX $ TMacro m x
 
-pprPrimes :: Int -> Builder
-pprPrimes n = pprTeX . TConst $ case n of
-  1 -> "prime"
-  2 -> "dprime"
-  3 -> "trprime"
-  4 -> "qprime"
-  _ -> error $ "Format.pprPrimes: " <> show n <> " primes not supported."
+pprRhs :: Rhs -> Builder
+pprRhs (Plain x)               = pprMacro x
+pprRhs (Sub x xb)              = B.singleton '{' <> pprMacro x <> B.fromString "}_{" <> pprMacro xb <> B.singleton '}'
+pprRhs (Super x xp)            = B.singleton '{' <> pprMacro x <> B.fromString "}^{" <> pprMacro xp <> B.singleton '}'
+pprRhs (Indexed x xb xp)       = B.singleton '{' <> pprMacro x <> B.fromString "}_{" <> pprMacro xb <> B.fromString "}^{" <> pprMacro xb <> B.singleton '}'
+pprRhs (Prime f n (m,x))       = pprMacro (m,x <> f n)
+pprRhs (SubPrime f n (m,x) xb) = pprMacro (m,TBraces (x <> f n) <> TRaw "_") <> pprMacro xb
+
+pprLhsPrimes :: Int -> Builder
+pprLhsPrimes n = B.fromText $ TS.replicate n "'"
 
 pprFormat :: Format -> Builder
 pprFormat f = case split f of
-  (lhs, rhs) -> B.fromString "%format " <> pprLhs lhs <> B.fromString " = \"" <> pprRhs rhs <> B.singleton '"'
+  (pre, post, lhs, rhs) ->
+    B.fromString "%format " <>
+    B.fromText pre <> pprLhs lhs <> B.fromText post <>
+    B.fromString " = \"" <>
+    pprRhs rhs <> B.singleton '"'
 
 pprPage :: Page -> Builder
 pprPage = foldMap ((<> B.singleton '\n') . pprFormat)
@@ -217,25 +252,6 @@ prettyPage = B.toLazyText . pprPage
 
 printPage :: Page -> IO ()
 printPage = TLIO.putStr . prettyPage
-
---------------------------------------------------------------------------------
-
--- Inject Varid or Conid
-
-data IdMacro = Varid | Conid
-
-idToText :: IdMacro -> Text
-idToText Varid = "Varid"
-idToText Conid = "Conid"
-
-wrapTeX :: IdMacro -> TeX -> TeX
-wrapTeX im = TMacro (idToText im)
-
-injectIdF :: IdMacro -> Format -> Format
-injectIdF im = fmap (id *** wrapTeX im)
-
-injectId :: IdMacro -> Page -> Page
-injectId im = fmap (injectIdF im)
 
 --------------------------------------------------------------------------------
 
@@ -249,8 +265,8 @@ latin = latinLower <> latinUpper
 
 -- Greek alphabet
 greekLower, greekUpper, greek :: Page
-greekLower = fromList mkConst ["alpha","beta","gamma","delta","epsilon","varepsilon","zeta","eta","theta","vartheta","iota","kappa","varkappa","lambda","mu","nu","xi","pi","varpi","rho","varrho","sigma","varsigma","tau","upsilon","phi","varphi","chi","psi","omega"]
-greekUpper = fromList mkConst ["Gamma","Delta","Lambda","Phi","Pi","Psi","Sigma","Theta","Upsilon","Xi","Omega"]
+greekLower = fromList mkPlainConst ["alpha","beta","gamma","delta","epsilon","varepsilon","zeta","eta","theta","vartheta","iota","kappa","varkappa","lambda","mu","nu","xi","pi","varpi","rho","varrho","sigma","varsigma","tau","upsilon","phi","varphi","chi","psi","omega"]
+greekUpper = fromList mkPlainConst ["Gamma","Delta","Lambda","Phi","Pi","Psi","Sigma","Theta","Upsilon","Xi","Omega"]
 greek = greekLower <> greekUpper
 
 -- Combined Latin and Greek alphabets

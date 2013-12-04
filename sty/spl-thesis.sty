@@ -3,17 +3,18 @@
 %-------------------------------------------------------------------------------
 
 % File name: spl-thesis.sty
-% Author: Sean Leather <firstname.lastname@gmail.com>
+% Author: Sean Leather <sean.leather@gmail.com>
 
 % (1) Since we are loading 'unicode-math', this package must be loaded /after/
-%     'amssymb' and 'amsmath'.
+%     'amssymb' and 'amsmath'. Note that polycode.fmt from lhs2TeX loads
+%     'amsmath' and other packages.
 
 
 %-------------------------------------------------------------------------------
 %   GENERAL
 %-------------------------------------------------------------------------------
 
-\ProvidesPackage{spl-thesis}[2013/11/06 v0.1 SPL thesis]
+\ProvidesPackage{spl-thesis}[2013/12/04 v0.2 SPL thesis]
 
 % This class is for use with XeTeX.
 \RequirePackage{ifxetex}
@@ -27,14 +28,17 @@
 % Unicode fonts
 \RequirePackage{fontspec}
 
+% Default features
+\defaultfontfeatures{Scale=MatchLowercase,Ligatures=TeX}
+
 % Main font
-\setmainfont[Ligatures=TeX]{Garamond Premier Pro}
+\setmainfont{Garamond Premier Pro}
 
 % Sans-serif font
-\setsansfont[Scale=MatchLowercase]{Optima}
+\setsansfont{Optima}
 
 % Monospaced/Teletype font
-\setmonofont[Scale=MatchLowercase]{Adelle}
+\setmonofont{Adelle}
 
 
 %-------------------------------------------------------------------------------
@@ -47,47 +51,29 @@
 % Unicode fonts for text and math (cannot be followed by 'amsmath')
 \RequirePackage{unicode-math}
 
-% Font families
-\newfontfamily\typfamily[Scale=MatchUppercase]{Futura Std Book}
+% Default math font
+\setmathfont{Asana Math}
+\setmathfont[range=\mathsfup,Scale=0.97]{Asana Math}
+\setmathfont[range=\mathbfsfup,Scale=0.95]{Asana Math}
 
-%\setmathfont{Garamond Premier Pro}
-\setmathfont[Scale=MatchUppercase]{XITS Math}
+% Monospaced/Teletype math font
+\setmathfont[range=\mathtt->\mathup]{Roboto Slab}
+\newfontfamily{\robotoslabfamily}{Roboto Slab}
+\newfontfamily{\robotoslabboldfamily}{Roboto Slab Bold}
+\setmathfont[range=\mathstraightquote]{Roboto Slab}
 
-% XITS Math: \mathscr
-\setmathfont[range=\mathscr]{XITS Math}
-
-% Garamond Premier Pro: most math fonts
-\setmathfont[range=\mathup/{num,latin,Latin,greek,Greek},   Ligatures=TeX, Numbers={Lining}]{Garamond Premier Pro}
-\setmathfont[range=\mathit/{num,latin,Latin,greek,Greek},   Ligatures=TeX, Numbers={Lining}]{Garamond Premier Pro Italic}
-\setmathfont[range=\mathbf/{num,latin,Latin,greek,Greek},   Ligatures=TeX, Numbers={Lining}]{Garamond Premier Pro Bold Italic}
-\setmathfont[range=\mathbfup/{num,latin,Latin,greek,Greek}, Ligatures=TeX, Numbers={Lining}]{Garamond Premier Pro Bold}
-
-% Punctuation
-\setmathfont[range={"002C-"002F,"005B-"005D,"007C,"2025}]{Garamond Premier Pro}
-
-% Apple Chancery: \mathcal
-\setmathfont[range=\mathcal]{Apple Chancery}
-
-% EB Garamond: :, =, ::, :=, ::= (Coloneqq)
-\setmathfont[range={"003A,"003D,"2237,"2254,"2A74}]{EB Garamond 12 Regular}
-
-% Asana Math: forall, exists, ++
-\setmathfont[range={"2200,"2203,"29FA}]{Asana Math}
-\setmathfont[range={"2032}]{Asana Math}
 
 %-------------------------------------------------------------------------------
 %   SYMBOLS
 %-------------------------------------------------------------------------------
 
-% Extras for XeTeX (e.g. \textsuperscript/\textsubscript)
-\RequirePackage{xltxtra}
-
-% From latexsym
-\DeclareSymbolFont{lasy}{U}{lasy}{m}{n}
-\DeclareMathSymbol{\rightwavearrow}{\mathrel}{lasy}{"3B}
-
 % For \stackbin
 \usepackage{stackrel}
+
+% These look better:
+\setmathfont[range={\doubleplus}]{XITS Math} % ++
+\setmathfont[range={\Coloneq}]{EB Garamond 12 Regular} % ::=
+\setmathfont[range={\smwhtdiamond}]{TeX Gyre Pagella Math} % <>
 
 
 %-------------------------------------------------------------------------------
@@ -173,22 +159,21 @@
 %-------------------------------------------------------------------------------
 
 % Equation label
-\newcommand{\eqlabel}[1]{\ensuremath{{\scriptstyle \textsc{(#1)}}}}
+\newcommand{\eqlabel}[1]{\ensuremath{\textsc{(#1)}}}
 
 % Math keyword
-\newcommand{\mathkw}[1]{\ensuremath{\text{\textbf{#1}}}}
+\newcommand{\Keyword}[1]{\ensuremath{\text{\robotoslabboldfamily{}#1}}}
 
-% Type
-\newcommand{\typ}[1]{\ensuremath{\text{\typfamily #1}}}
+% Syntax identifiers
+\newcommand{\Synid}[1]{\ensuremath{\mathsfup{#1}}}
 
+% Meta identifiers
+\newcommand{\Metaid}[1]{\ensuremath{#1}}
 
-%-------------------------------------------------------------------------------
-%   LHS2TEX
-%-------------------------------------------------------------------------------
+% Override lhs2TeX
+\renewcommand{\Varid}[1]{\ensuremath{\mathtt{#1}}}
+\renewcommand{\Conid}[1]{\ensuremath{\mathtt{#1}}}
 
-% Override
-\renewcommand{\Varid}[1]{\mathit{#1}}
-\renewcommand{\Conid}[1]{\mathup{#1}}
 
 %-------------------------------------------------------------------------------
 %   BIBLIOGRAPHY
