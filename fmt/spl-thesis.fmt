@@ -104,8 +104,6 @@
 %format mempty = "\epsilonup "
 
 % Haskell operators
-%format $ = "\mathrel{\$}"
-%format <> = "\diamond "
 %format .+. = "\oplus "
 
 % Haskell operator prefix versions

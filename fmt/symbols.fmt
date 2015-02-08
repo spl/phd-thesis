@@ -12,7 +12,9 @@
 
 %format |       = "\mathrel{\;|\;}"
 
+%format $       = "\mathrel{\$}"
 %format ++      = "\doubleplus{}"
+%format <>      = "\diamond{}"
 
 %format .       = "."
 %format `o`     = "\vysmwhtcircle{}"
