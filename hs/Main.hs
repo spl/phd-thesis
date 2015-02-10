@@ -119,7 +119,7 @@ eqlabelR :: Text -> TeX
 eqlabelR = TMacro "eqlabel" . TRaw
 
 mkRule :: Maybe Text -> Text -> Format
-mkRule pre t = mkPlain $ ("R." <>) *** eqlabelR $ case pre of
+mkRule mPre t = mkPlain $ ("R." <>) *** eqlabelR $ case mPre of
   Nothing  -> (t, t)
   Just pre -> (pre <> t, pre <> "-" <> t)
 
