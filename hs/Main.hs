@@ -54,6 +54,7 @@ otherMetaidsBase = S.fromList $ map mkPlain
   , ("sbf",   mathringR thetaR)      -- Substitution for type functors
   , ("env",   gammaR_)               -- Type environment
   , ("envf",  mathringR gammaR_)     -- Type functor environment
+  , ("dx",    deltaR)                -- Type functor variable
   ]
 
 otherMetaids :: Page
@@ -74,11 +75,28 @@ otherConids = injectMacro "Conid" $ S.fromList $ map mkPlain
 
 --------------------------------------------------------------------------------
 
+mathcals :: Page
+mathcals = injectMacro "mathcal" $ S.fromList $ map mkPlain
+  [ ("T.A",     "A")            -- Abstract type
+  , ("T.R",     "R")            -- Representation type
+  ]
+
+mathscrs :: Page
+mathscrs = injectMacro "mathscr" $ S.fromList $ map mkPlain
+  [ ("A.G",     "G")            -- Generalization
+  , ("A.U",     "U")            -- Unification
+  , ("A.W",     "W")            -- Algorithm W
+  ]
+
+--------------------------------------------------------------------------------
+
 synids :: Page
 synids = injectMacro "Synid" $ S.fromList $ map mkPlain
   [ ("S.exp",   "Exp")          -- Expressions/terms
   , ("S.typ",   "Typ")          -- Types
-  , ("S.env",   "Env")          -- Environment
+  , ("S.env",   "Env")          -- Type environments
+  , ("S.tyf",   "TyF")          -- Type functors
+  , ("S.envf",  "EnF")          -- Type functor environments
   ]
 
 --------------------------------------------------------------------------------
@@ -130,6 +148,8 @@ pages = mconcat
   , commonConids
   , otherMetaids
   , otherConids
+  , mathcals
+  , mathscrs
   , synids
   , keywords
   , rules

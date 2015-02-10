@@ -16,11 +16,6 @@
 
 %include gen.fmt
 
-% Formats that override gen.fmt
-%format f' = "\Varid{f\,\prime}"
-%format f'' = "\Varid{f\,\dprime}"
-%format f''' = "\Varid{f\,\trprime}"
-
 
 %-------------------------------------------------------------------------------
 %   SPACING
@@ -37,9 +32,7 @@
 %-------------------------------------------------------------------------------
 
 % mathscr
-%format G = "\mathscr{G}"
 %format (Gen(e)(t)) = "{" G "}_{" e "}(" t ")"
-%format Unify = "\mathscr{U}"
 %format ruleset = "\mathscr{R}"
 
 %format ttf = "\mathscr{T}"
@@ -47,7 +40,6 @@
 %format ttf_Envf = ttf "_{" Envf "}"
 %format noI = "\bar{\iota}"
 
-%format W = "\mathscr{W}"
 %format PW = "\mathscr{P}_{\mathscr{W}}"
 
 % Non-keywords
@@ -121,9 +113,6 @@
 
 % Types
 %format tv_bty = "\sfrac{" tv "}{" bty "}"
-%format tyI = "\Varid{\iota}"
-%format tyA = "\Varid{\mathcal{A}}"
-%format tyR = "\Varid{\mathcal{R}}"
 
 % Examples
 %format Fix_ = "\Varid{Fix}"

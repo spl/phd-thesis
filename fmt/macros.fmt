@@ -5,3 +5,5 @@
 %format (p_app(f)(x))           = "{" f "}(" x ")"
 %format (p_app'(f)(x))          = "{" f "}\,(" x ")"
 %format (a_app(f)(x))           = "{" f "}\langle{}" x "\rangle{}"
+
+%format (subst_one(x)(e)(f))    = "[" x +-> e "]" f
