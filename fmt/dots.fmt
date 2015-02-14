@@ -1,0 +1,28 @@
+% See http://en.wikibooks.org/wiki/LaTeX/Mathematics#Dots
+
+% Normal dots: don't use very often
+%format dots = "\dots{}"
+
+% Centered dots: try the more specialized dots below first
+%format cdots = "\cdots{}"
+
+% Diagnonal dots
+%format ddots = "\ddots{}"
+
+% Vertical dots
+%format vdots = "\vdots{}"
+
+% Dots for binary operator sequences (A_1 + ... + A_N)
+%format dotsb = "\dotsb{}"
+
+% Dots for commas (A_1, ..., A_N)
+%format dotsc = "\dotsc{}"
+
+% Dots for other sequences (e.g. A_1 ... A_N)
+%format dotso = "\dotso{}"
+
+% TODO: Not sure if this is the right definition
+%format ... = "\mathbin{\ldots}"
+
+% A centered dot
+%format cdot = "\cdot{}"

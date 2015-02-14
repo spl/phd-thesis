@@ -5,6 +5,7 @@
 %include polycode.fmt
 %include spaces.fmt
 %include arrows.fmt
+%include dots.fmt
 %include symbols.fmt
 %include syntax.fmt
 %include macros.fmt
@@ -62,12 +63,6 @@
 %format (rwbrack(e)) = "\left\langle " e "\right\rangle "
 %format (tyfsub(t)(r)) = t "\langle " r "\rangle "
 %format (scfsub(t)(r)(e)) = t "\langle " r "\rangle_{" e "}"
-
-% Dots
-%format dots = "\cdots "
-%format rdots = ".."
-%format cdot = "\cdot "
-%format ... = "\mathbin{\ldots}"
 
 % Boolean: conjunction and disjunction
 % TODO: should replace with && ||
