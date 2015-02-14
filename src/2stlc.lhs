@@ -2,19 +2,19 @@
 
 \begin{figure}[h]
 \begin{tabular}{l @@{|quad|} l @@{|synspace ::= synspace|} l}
-|S.exp|
+|Syn.exp|
 &
 |e,f|
 &
 |n || s || x || f e || \ x :: ty . e|
 \\
-|S.typ|
+|Syn.typ|
 &
 |ty,tz|
 &
 |T.num || T.str || ty -> tz|
 \\
-|S.env|
+|Syn.env|
 &
 |env|
 &
@@ -54,13 +54,13 @@
 
 \begin{figure}[h]
 \begin{tabular}{l @@{|quad|} l @@{|synspace ::= synspace|} l}
-|S.tyf|
+|Syn.tyf|
 &
 |tyf,tzf|
 &
 |T.num || T.str || tyf -> tzf || dx|
 \\
-|S.envf|
+|Syn.envf|
 &
 |envf|
 &

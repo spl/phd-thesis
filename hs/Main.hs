@@ -92,11 +92,11 @@ mathscrs = injectMacro "mathscr" $ S.fromList $ map mkPlain
 
 synids :: Page
 synids = injectMacro "Synid" $ S.fromList $ map mkPlain
-  [ ("S.exp",   "Exp")          -- Expressions/terms
-  , ("S.typ",   "Typ")          -- Types
-  , ("S.env",   "Env")          -- Type environments
-  , ("S.tyf",   "TyF")          -- Type functors
-  , ("S.envf",  "EnF")          -- Type functor environments
+  [ ("Syn.exp",   "Exp")          -- Expressions/terms
+  , ("Syn.typ",   "Typ")          -- Types
+  , ("Syn.env",   "Env")          -- Type environments
+  , ("Syn.tyf",   "TyF")          -- Type functors
+  , ("Syn.envf",  "EnF")          -- Type functor environments
   ]
 
 --------------------------------------------------------------------------------
