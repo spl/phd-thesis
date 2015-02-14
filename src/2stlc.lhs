@@ -51,3 +51,31 @@
 \caption{Typing inference rules for the simply typed lambda-calculus}
 \label{fig:typing}
 \end{figure}
+
+\begin{figure}[h]
+\begin{tabular}{l @@{|quad|} l @@{|synspace ::= synspace|} l}
+|S.tyf|
+&
+|tyf,tzf|
+&
+|T.num || T.str || tyf -> tzf || dx|
+\\
+|S.envf|
+&
+|envf|
+&
+|empty || envf, x : tyf|
+\end{tabular}
+\caption{Syntax of type functors}
+\label{fig:obj-lang-syn}
+\end{figure}
+
+|forall dx . dx -> tyf|
+
+|"qz"|
+
+\begin{spec}
+(subst_one(dx)(T.str)(T.R T.A))
+\end{spec}
+
+x\(\mathrm{x}\)
