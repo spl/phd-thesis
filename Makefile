@@ -21,7 +21,9 @@ BIBFILES := $(patsubst $(BIBDIR)/%, $(OUTDIR)/%, $(wildcard $(BIBDIR)/*.bib))
 
 # latexmk
 LATEXMK	     := latexmk
-LATEXMKFLAGS := -silent -halt-on-error -file-line-error -bibtex -xelatex -pv
+#LATEXMKPREVIEW := -pv
+LATEXMKPREVIEW :=
+LATEXMKFLAGS := -silent -halt-on-error -file-line-error -bibtex -xelatex $(LATEXMKPREVIEW)
 
 # lhs2TeX
 LHS2TEX      := lhs2TeX
