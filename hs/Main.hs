@@ -55,6 +55,9 @@ otherMetaidsBase = S.fromList $ map mkPlain
   , ("env",   gammaR_)               -- Type environment
   , ("envf",  mathringR gammaR_)     -- Type functor environment
   , ("dx",    deltaR)                -- Type functor variable
+  , ("tvM",   "M")                   -- Type variable set M
+  , ("tvN",   "N")                   -- Type variable set N
+  , ("tva",   alphaR)                -- Type variable set alpha
   ]
 
 otherMetaids :: Page

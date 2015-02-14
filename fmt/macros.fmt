@@ -7,3 +7,6 @@
 %format (a_app(f)(x))           = "{" f "}\langle{}" x "\rangle{}"
 
 %format (subst_one(x)(e)(f))    = "[" x +-> e "]" f
+
+%format (magnitude(x))          = "|" x "|"
+%format (arity(g)(x))           = "|" x "|_{" g "}"

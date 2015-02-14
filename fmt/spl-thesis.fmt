@@ -154,10 +154,7 @@
 %format complexrect = "\package{complex-rect}"
 %format complexpolar = "\package{complex-polar}"
 
-% Magnitude, arity, and subscript
-%format (magnitude(x)) = "|" x "|"
-%format (arity(g)(x)) = "|" x "|_{" g "}"
-%format (sub(x)(s)) = "{" x "}_{" s "}"
+%format NN = "\mathbb{N}"
 
 % Dimap
 %format D = "\mathcal{D}"

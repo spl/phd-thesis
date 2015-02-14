@@ -1,8 +1,9 @@
-%format forall  = "\forall{}"
-%format exists  = "\exists{}"
+%format forall  = "\forall{}\mkern-5mu{}"
+%format exists  = "\exists{}\mkern-5mu{}"
 
-%format \       = "\text{\robotoslabfamily{}λ}"
-%format Lambda  = "\Lambda{}"
+%format \       = "\lambda{}"
+%format Lambda  = "\Lambda{}\mkern-5mu{}"
+%format Delta   = "\Delta{}\mkern-5mu{}"
 
 %format +-      = "\vdash{}"
 
