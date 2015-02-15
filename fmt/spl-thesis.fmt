@@ -64,32 +64,6 @@
 %format (tyfsub(t)(r)) = t "\langle " r "\rangle "
 %format (scfsub(t)(r)(e)) = t "\langle " r "\rangle_{" e "}"
 
-% Boolean: conjunction and disjunction
-% TODO: should replace with && ||
-%format ^^ = "\wedge "
-%format vv = "\vee "
-
-% Equality operators
-%format `neq` = "\nequiv "
-%format `beq` = "{\equiv}_{\beta\eta}"
-%format `def` = "\stackrel{\text{\tiny def}}{=}"
-
-% Triangles
-%format |> = "\mathrel{\triangleright}"
-%format <| = "\mathrel{\triangleleft}"
-%format (is(t)) = "\stackrel{\triangleleft}{\sim}_{" t "}"
-
-% Set operators
-%format `subseteq` = "\subseteq "
-%format `supseteq` = "\supseteq "
-%format `union` = "\cup "
-%format `intersect` = "\cap "
-%format complement = "\mathbin{\backslash}"
-%format `vert` = "\mathrel{\vert}"
-%format `del` = "\mathrel{\backslash} "
-%format empty = "\varepsilon "
-%format mempty = "\epsilonup "
-
 % Haskell operators
 %format .+. = "\oplus "
 

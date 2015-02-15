@@ -1,9 +1,9 @@
-%format forall  = "\forall{}\mkern-5mu{}"
-%format exists  = "\exists{}\mkern-5mu{}"
+%format forall  = "\forall{}"
+%format exists  = "\exists{}"
 
 %format \       = "\lambda{}"
-%format Lambda  = "\Lambda{}\mkern-5mu{}"
-%format Delta   = "\Delta{}\mkern-5mu{}"
+%format Lambda  = "\Lambda{}"
+%format Delta   = "\Delta{}"
 
 %format +-      = "\vdash{}"
 
@@ -19,3 +19,24 @@
 
 %format .       = "."
 %format `o`     = "\vysmwhtcircle{}"
+
+% Equality and definition
+%format `neq`   = "\nequiv "
+%format `beq`   = "{\equiv}_{\beta\eta}"
+%format `def`   = "\stackrel{\text{\tiny def}}{=}"
+
+% Triangles
+%format |>      = "\mathrel{\triangleright}"
+%format <|      = "\mathrel{\triangleleft}"
+%format (is(t)) = "\stackrel{\triangleleft}{\sim}_{" t "}"
+
+% Set operators
+%format `union`         = "\cup "
+%format `intersect`     = "\cap "
+%format `subseteq`      = "\subseteq "
+%format `supseteq`      = "\supseteq "
+%format complement      = "\mathbin{\backslash}"
+%format `vert`          = "\mathrel{\vert}"
+%format `del`           = "\mathrel{\backslash} "
+%format empty           = "\varepsilon "
+%format mempty          = "\epsilonup "
