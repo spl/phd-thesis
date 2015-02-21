@@ -8,7 +8,7 @@ For the convenience of our representation of the polymorphic lambda calculus, we
 use a variant of Narayanan's view\footnote{I don't like this word. Better term?}
 on type variables\footnote{mention chapter, cite Ma and Reynolds}.
 
-We use natural numbers as type variables.
+We use natural numbers (i.e.\ elements of the set |NN|) as type variables.
 %
 We also regard a natural number as the set of its predecessors.
 %
@@ -27,6 +27,8 @@ Note that the set |tvN `union` {(sub(tva)(tvN))}| is equivalent to |tvN+1|.
 A type expression with |tvN| free type variables is an element of the set
 |(sub(Syn.typ)(tvN))|, which is the least set satisfying the following rules:
 
+% Set the vertical spacing between lines in multi-line formulas (e.g. for
+% gather).
 % TODO: put this somewhere better
 \setlength{\jot}{6pt}
 
@@ -75,6 +77,10 @@ TODO: Finish talking about why we use Narayanan's view.
 \end{align*}
 
 TODO: Figure out proper precedence of |/|.
+
+\subsection{Type Environment}
+
+A type environment (or type assignment) is a function from
 
 \begin{figure}[h]
 \begin{tabular}{l @@{|quad|} l @@{|synspace ::= synspace|} l}
