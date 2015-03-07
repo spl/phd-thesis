@@ -9,8 +9,9 @@
 
 %format ::      = "\kern.0625em\mathord{\text{\robotoslabfamily{}:}}\kern.0625em"
 %format :=      = "\mathbin{\text{\robotoslabfamily{}=}}"
-%format ::=     = "\Coloneq{}"
 
+% Grammar operators
+%format ::=     = "\Coloneq{}"
 %format |       = "\mathrel{\;|\;}"
 
 %format $       = "\mathrel{\$}"

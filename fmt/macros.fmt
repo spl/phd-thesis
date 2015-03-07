@@ -6,7 +6,15 @@
 %format (p_app'(f)(x))          = "{" f "}\,(" x ")"
 %format (a_app(f)(x))           = "{" f "}\langle{}" x "\rangle{}"
 
+%format (funsub(f)(p)(e))       = "[" f "\mathbin{|}" p : e "]"
 %format (subst_one(x)(e)(f))    = "[" x +-> e "]" f
+
+%format (poly(a)(t))            = Delta ^^ a . t
+%format (arrow(t)(u))           = t -> u
+
+%format (singletsub(x)(e))      = "[" x +-> e "]"
+%format (composetsub(s)(t))     = s `o` t
+%format (applytsub(t)(s))       = t / s
 
 %format (magnitude(x))          = "|" x "|"
 %format (arity(g)(x))           = "|" x "|_{" g "}"

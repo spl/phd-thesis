@@ -58,6 +58,10 @@ otherMetaidsBase = S.fromList $ map mkPlain
   , ("tvM",   "M")                   -- Type variable set M
   , ("tvN",   "N")                   -- Type variable set N
   , ("tva",   alphaR)                -- Type variable set alpha
+  , ("Meta.tvara",  alphaR)          -- Type variable metavariable a
+  , ("Meta.typa",   tauR)            -- Type metavariable a
+  , ("Meta.typb",   upsilonR)        -- Type metavariable b
+  , ("Meta.tsuba",  thetaR)          -- Type substitution
   ]
 
 otherMetaids :: Page
@@ -95,8 +99,9 @@ mathscrs = injectMacro "mathscr" $ S.fromList $ map mkPlain
 
 synids :: Page
 synids = injectMacro "Synid" $ S.fromList $ map mkPlain
-  [ ("Syn.exp",   "Exp")          -- Expressions/terms
+  [ ("Syn.tvar",  "TVar")         -- Type variables
   , ("Syn.typ",   "Typ")          -- Types
+  , ("Syn.exp",   "Exp")          -- Expressions/terms
   , ("Syn.env",   "Env")          -- Type environments
   , ("Syn.tyf",   "TyF")          -- Type functors
   , ("Syn.envf",  "EnF")          -- Type functor environments

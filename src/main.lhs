@@ -20,6 +20,7 @@
 
 %include 1intro.lhs
 %include 2stlc.lhs
+%include 2lc.lhs
 %include 3fix.lhs
 %include 4pattern.lhs
 %include 5systemf.lhs
