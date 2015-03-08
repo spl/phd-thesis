@@ -3,12 +3,14 @@
 %-------------------------------------------------------------------------------
 
 %include polycode.fmt
-%include spaces.fmt
+
 %include arrows.fmt
 %include dots.fmt
+%include macros.fmt
+%include spaces.fmt
 %include symbols.fmt
 %include syntax.fmt
-%include macros.fmt
+%include variables.fmt
 
 
 %-------------------------------------------------------------------------------

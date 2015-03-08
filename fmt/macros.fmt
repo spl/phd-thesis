@@ -6,7 +6,7 @@
 %format (p_app'(f)(x))          = "{" f "}\,(" x ")"
 %format (a_app(f)(x))           = "{" f "}\langle{}" x "\rangle{}"
 
-%format (funsub(f)(p)(e))       = "[" f "\mathbin{|}" p : e "]"
+%format (funsub(f)(p)(e))       = "[" f "\mathbin{|}" p +-> e "]"
 %format (subst_one(x)(e)(f))    = "[" x +-> e "]" f
 
 %format (poly(a)(t))            = Delta ^^ a . t

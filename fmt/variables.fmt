@@ -1,0 +1,14 @@
+% Metavariables
+
+% Type variables
+%format tvar_a = "\Metaid{\alpha}"
+%format tvar_a' = "\Metaid{\alpha^\prime}"
+
+% Types
+%format typ_a = "\Metaid{\tau}"
+%format typ_b = "\Metaid{\upsilon}"
+
+% Type substitutions
+%format tsub_a = "\Metaid{\theta}"
+%format tsub_a_1 = "\Metaid{\theta}_{\Metaid{1}}"
+%format tsub_a_2 = "\Metaid{\theta}_{\Metaid{2}}"
